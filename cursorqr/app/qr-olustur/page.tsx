@@ -1,11 +1,22 @@
 'use client'
 
 import { Suspense } from 'react'
+import { useSearchParams } from 'next/navigation'
 import dynamic from 'next/dynamic'
+import type { ComponentType } from 'react'
 
-const SearchParamsWrapper = dynamic(() => import('./search-params-wrapper'), { ssr: false })
+export const dynamicConfig = 'force-dynamic'
+
+interface QRContentProps {
+  imageUrl: string
+}
+
+const QRContent: ComponentType<QRContentProps> = dynamic(() => import('./qr-content').then(mod => mod.default), { ssr: false })
 
 export default function QRPage() {
+  const searchParams = useSearchParams()
+  const imageUrl = searchParams.get('imageUrl')
+
   return (
     <Suspense fallback={
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 py-16 px-4">
@@ -20,7 +31,7 @@ export default function QRPage() {
         </div>
       </div>
     }>
-      <SearchParamsWrapper />
+      {imageUrl && <QRContent imageUrl={imageUrl} />}
     </Suspense>
   )
 } 

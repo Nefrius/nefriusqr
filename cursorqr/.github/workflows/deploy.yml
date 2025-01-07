@@ -23,9 +23,7 @@ jobs:
 
       - name: Install dependencies
         working-directory: ./
-        run: |
-          npm install
-          npm install next@latest
+        run: npm install
 
       - name: Build
         working-directory: ./

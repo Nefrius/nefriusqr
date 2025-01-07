@@ -2,8 +2,8 @@
 
 import { useState } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
-import Image from 'next/image'
-import { motion, AnimatePresence } from 'framer-motion'
+import Image from 'next/legacy/image'
+import { motion, AnimatePresence, LazyMotion, domAnimation } from 'framer-motion'
 import { FaQrcode, FaHistory, FaInfoCircle, FaCoins, FaUser, FaCog, FaSignOutAlt, FaSpinner, FaShieldAlt } from 'react-icons/fa'
 import { useAuth } from '../context/AuthContext'
 import Toast from './Toast'
@@ -90,56 +90,60 @@ export default function Navbar() {
                           onClick={() => setIsMenuOpen(!isMenuOpen)}
                           className="focus:outline-none"
                         >
-                          <Image
-                            src={user.photoURL || ''}
-                            alt={user.displayName || 'Kullanıcı'}
-                            width={32}
-                            height={32}
-                            className="rounded-full ring-2 ring-purple-500 hover:ring-4 transition-all"
-                          />
+                          <div className="w-8 h-8 relative">
+                            <Image
+                              src={user.photoURL || ''}
+                              alt={user.displayName || 'Kullanıcı'}
+                              layout="fill"
+                              className="rounded-full ring-2 ring-purple-500 hover:ring-4 transition-all"
+                              objectFit="cover"
+                            />
+                          </div>
                         </motion.button>
 
-                        <AnimatePresence>
-                          {isMenuOpen && (
-                            <motion.div
-                              initial={{ opacity: 0, scale: 0.95 }}
-                              animate={{ opacity: 1, scale: 1 }}
-                              exit={{ opacity: 0, scale: 0.95 }}
-                              className="absolute right-0 mt-2 w-48 bg-gray-800 rounded-xl shadow-lg py-1 z-50"
-                            >
-                              <div className="px-4 py-3 border-b border-gray-700">
-                                <p className="text-sm text-white font-semibold">{user.displayName}</p>
-                                <p className="text-xs text-gray-400">{user.email}</p>
-                              </div>
-                              {userMenuItems.map((item) => {
-                                const Icon = item.icon
-                                return (
-                                  <div
-                                    key={item.href}
-                                    onClick={() => {
-                                      router.push(item.href)
-                                      setIsMenuOpen(false)
-                                    }}
-                                    className="px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-gray-700 flex items-center space-x-2 cursor-pointer"
-                                  >
-                                    <Icon className="text-lg" />
-                                    <span>{item.label}</span>
-                                  </div>
-                                )
-                              })}
-                              <button
-                                onClick={() => {
-                                  logout()
-                                  setIsMenuOpen(false)
-                                }}
-                                className="w-full px-4 py-2 text-sm text-red-400 hover:text-red-300 hover:bg-gray-700 flex items-center space-x-2"
+                        <LazyMotion features={domAnimation}>
+                          <AnimatePresence initial={false}>
+                            {isMenuOpen ? (
+                              <motion.div
+                                initial={{ opacity: 0, scale: 0.95 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                exit={{ opacity: 0, scale: 0.95 }}
+                                className="absolute right-0 mt-2 w-48 bg-gray-800 rounded-xl shadow-lg py-1 z-50"
                               >
-                                <FaSignOutAlt className="text-lg" />
-                                <span>Çıkış Yap</span>
-                              </button>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
+                                <div className="px-4 py-3 border-b border-gray-700">
+                                  <p className="text-sm text-white font-semibold">{user.displayName}</p>
+                                  <p className="text-xs text-gray-400">{user.email}</p>
+                                </div>
+                                {userMenuItems.map((item) => {
+                                  const Icon = item.icon
+                                  return (
+                                    <div
+                                      key={item.href}
+                                      onClick={() => {
+                                        router.push(item.href)
+                                        setIsMenuOpen(false)
+                                      }}
+                                      className="px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-gray-700 flex items-center space-x-2 cursor-pointer"
+                                    >
+                                      <Icon className="text-lg" />
+                                      <span>{item.label}</span>
+                                    </div>
+                                  )
+                                })}
+                                <button
+                                  onClick={() => {
+                                    logout()
+                                    setIsMenuOpen(false)
+                                  }}
+                                  className="w-full px-4 py-2 text-sm text-red-400 hover:text-red-300 hover:bg-gray-700 flex items-center space-x-2"
+                                >
+                                  <FaSignOutAlt className="text-lg" />
+                                  <span>Çıkış Yap</span>
+                                </button>
+                              </motion.div>
+                            ) : null}
+                          </AnimatePresence>
+                        </LazyMotion>
                       </div>
                     </div>
                   ) : (

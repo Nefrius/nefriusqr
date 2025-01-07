@@ -5,7 +5,7 @@ const nextConfig = {
     domains: ['i.ibb.co', 'lh3.googleusercontent.com']
   },
   experimental: {
-    missingSuspenseWithCSRBailout: false
+    missingSuspenseWithCSRBailout: true
   }
 }
 

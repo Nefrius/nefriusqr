@@ -1,13 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',
+  output: 'standalone',
   images: {
-    domains: ['i.ibb.co', 'lh3.googleusercontent.com'],
-    unoptimized: true,
-  },
-  basePath: '',
-  assetPrefix: './',
-  trailingSlash: true,
+    domains: ['i.ibb.co', 'lh3.googleusercontent.com']
+  }
 }
 
 module.exports = nextConfig 

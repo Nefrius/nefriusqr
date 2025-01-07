@@ -1,9 +1,16 @@
+'use client'
+
 import { Suspense } from 'react'
+import { useSearchParams } from 'next/navigation'
 import dynamic from 'next/dynamic'
 
-export const dynamicConfig = 'force-dynamic'
+const QRContent = dynamic(() => import('./qr-content'), { ssr: false })
 
-const SearchParamsContent = dynamic(() => import('./search-params-content'), { ssr: false })
+function SearchParamsContent() {
+  const searchParams = useSearchParams()
+  const imageUrl = searchParams.get('imageUrl')
+  return imageUrl ? <QRContent imageUrl={imageUrl} /> : null
+}
 
 export default function QRPage() {
   return (

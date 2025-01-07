@@ -5,8 +5,9 @@ const nextConfig = {
     domains: ['i.ibb.co', 'lh3.googleusercontent.com'],
     unoptimized: true,
   },
-  basePath: '/mynefriusqr',
-  assetPrefix: '/mynefriusqr/',
+  basePath: '',
+  assetPrefix: './',
+  trailingSlash: true,
 }
 
 module.exports = nextConfig 

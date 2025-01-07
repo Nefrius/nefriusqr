@@ -5,8 +5,9 @@ import { useState, useEffect, Suspense } from 'react'
 import { QRCodeSVG } from 'qrcode.react'
 import { FaDownload, FaShare, FaArrowLeft, FaMagic } from 'react-icons/fa'
 import { useRouter, useSearchParams } from 'next/navigation'
+import dynamic from 'next/dynamic'
 
-function QRContent() {
+function QRContentComponent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const imageUrl = searchParams.get('imageUrl')
@@ -162,6 +163,8 @@ function QRContent() {
     </div>
   )
 }
+
+const QRContent = dynamic(() => Promise.resolve(QRContentComponent), { ssr: false })
 
 export default function QRPage() {
   return (

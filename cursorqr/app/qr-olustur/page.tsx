@@ -1,9 +1,11 @@
+'use client'
+
 import { Suspense } from 'react'
 import dynamic from 'next/dynamic'
 
 export const pageConfig = 'force-dynamic'
 
-const SearchParamsWrapper = dynamic(() => import('./search-params-wrapper'), { ssr: false })
+const SearchParamsWrapper = dynamic(() => import('./search-params-wrapper'))
 
 export default function QRPage() {
   return (

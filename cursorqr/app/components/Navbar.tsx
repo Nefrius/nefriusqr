@@ -1,15 +1,15 @@
 'use client'
 
 import { useState } from 'react'
-import Link from 'next/link'
+import { useRouter, usePathname } from 'next/navigation'
 import Image from 'next/image'
-import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { FaQrcode, FaHistory, FaInfoCircle, FaCoins, FaUser, FaCog, FaSignOutAlt, FaSpinner, FaShieldAlt } from 'react-icons/fa'
 import { useAuth } from '../context/AuthContext'
 import Toast from './Toast'
 
 export default function Navbar() {
+  const router = useRouter()
   const pathname = usePathname()
   const { user, coins, loading, error, isAdmin, signInWithGoogle, logout } = useAuth()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -32,7 +32,10 @@ export default function Navbar() {
       <nav className="bg-gray-900 border-b border-gray-800">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
-            <Link href="/" className="flex items-center space-x-3">
+            <div 
+              className="flex items-center space-x-3 cursor-pointer" 
+              onClick={() => router.push('/')}
+            >
               <motion.div
                 whileHover={{ rotate: 360 }}
                 transition={{ duration: 0.5 }}
@@ -42,7 +45,7 @@ export default function Navbar() {
               <span className="text-xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 text-transparent bg-clip-text">
                 QR Oluşturucu
               </span>
-            </Link>
+            </div>
 
             <div className="hidden md:flex items-center space-x-8">
               {navItems.map((item) => {
@@ -50,10 +53,10 @@ export default function Navbar() {
                 const isActive = pathname === item.href
                 
                 return (
-                  <Link
+                  <div
                     key={item.href}
-                    href={item.href}
-                    className={`flex items-center space-x-2 px-3 py-2 rounded-md transition-colors ${
+                    onClick={() => router.push(item.href)}
+                    className={`flex items-center space-x-2 px-3 py-2 rounded-md transition-colors cursor-pointer ${
                       isActive
                         ? 'text-purple-400 bg-gray-800'
                         : 'text-gray-300 hover:text-purple-400 hover:bg-gray-800'
@@ -61,7 +64,7 @@ export default function Navbar() {
                   >
                     <Icon className="text-lg" />
                     <span>{item.label}</span>
-                  </Link>
+                  </div>
                 )
               })}
             </div>
@@ -111,15 +114,17 @@ export default function Navbar() {
                               {userMenuItems.map((item) => {
                                 const Icon = item.icon
                                 return (
-                                  <Link
+                                  <div
                                     key={item.href}
-                                    href={item.href}
-                                    className="px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-gray-700 flex items-center space-x-2"
-                                    onClick={() => setIsMenuOpen(false)}
+                                    onClick={() => {
+                                      router.push(item.href)
+                                      setIsMenuOpen(false)
+                                    }}
+                                    className="px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-gray-700 flex items-center space-x-2 cursor-pointer"
                                   >
                                     <Icon className="text-lg" />
                                     <span>{item.label}</span>
-                                  </Link>
+                                  </div>
                                 )
                               })}
                               <button

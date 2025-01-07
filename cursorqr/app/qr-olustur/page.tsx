@@ -1,7 +1,9 @@
 import { Suspense } from 'react'
 import dynamic from 'next/dynamic'
 
-const SearchParamsContent = dynamic(() => import('./search-params-content'), { ssr: false })
+export const pageConfig = 'force-dynamic'
+
+const SearchParamsWrapper = dynamic(() => import('./search-params-wrapper'), { ssr: false })
 
 export default function QRPage() {
   return (
@@ -18,7 +20,7 @@ export default function QRPage() {
         </div>
       </div>
     }>
-      <SearchParamsContent />
+      <SearchParamsWrapper />
     </Suspense>
   )
 } 

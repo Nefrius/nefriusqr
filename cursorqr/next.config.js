@@ -1,12 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',
+  output: 'standalone',
   images: {
-    domains: ['i.ibb.co', 'lh3.googleusercontent.com'],
-    unoptimized: true
+    domains: ['i.ibb.co', 'lh3.googleusercontent.com']
   },
-  basePath: '/mynefriusqr',
-  assetPrefix: '/mynefriusqr/'
+  experimental: {
+    missingSuspenseWithCSRBailout: false
+  }
 }
 
 module.exports = nextConfig 
